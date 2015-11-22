@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-json",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Lint JSON files",
   "keywords": [
     "eslint",
@@ -24,6 +24,6 @@
   "engines": {
     "node": ">=0.10.0"
   },
-  "url" : "https://github.com/azeemba/eslint-plugin-json",
+  "url": "https://github.com/azeemba/eslint-plugin-json",
   "license": "ISC"
 }
