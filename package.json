@@ -5,9 +5,11 @@
   "keywords": [
     "eslint",
     "eslintplugin",
-    "eslint-plugin"
+    "eslint-plugin",
+    "json",
+    "eslint-plugin-json"
   ],
-  "author": "Azeem Bande-Ali",
+  "author": "Azeem Bande-Ali <a.bandeali@gmail.com>",
   "main": "lib/index.js",
   "scripts": {
     "test": "mocha"
@@ -22,5 +24,6 @@
   "engines": {
     "node": ">=0.10.0"
   },
+  "url" : "https://github.com/azeemba/eslint-plugin-json",
   "license": "ISC"
 }
