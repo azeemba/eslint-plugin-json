@@ -2,6 +2,8 @@
 
 Lint JSON files
 
+[![Build Status](https://travis-ci.org/azeemba/eslint-plugin-json.svg)](https://travis-ci.org/azeemba/eslint-plugin-json)
+
 ## Installation
 
 You'll first need to install [ESLint](http://eslint.org):
