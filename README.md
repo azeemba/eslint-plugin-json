@@ -1,8 +1,8 @@
 # eslint-plugin-json
 
-Lint JSON files
+[![Build Status](https://travis-ci.org/azeemba/eslint-plugin-json.svg)](https://travis-ci.org/azeemba/eslint-plugin-json) [![Code Climate](https://codeclimate.com/github/azeemba/eslint-plugin-json/badges/gpa.svg)](https://codeclimate.com/github/azeemba/eslint-plugin-json)
 
-[![Build Status](https://travis-ci.org/azeemba/eslint-plugin-json.svg)](https://travis-ci.org/azeemba/eslint-plugin-json)
+Lint JSON files
 
 ## Installation
 
