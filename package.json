@@ -14,12 +14,20 @@
   "scripts": {
     "test": "mocha"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/azeemba/eslint-plugin-json"
+  },
+  "bugs": {
+    "url": "https://github.com/azeemba/eslint-plugin-json/issues"
+  },
   "dependencies": {
-    "jshint": "^2.8.0",
-    "requireindex": "~1.1.0"
+    "jshint": "^2.8.0"
   },
   "devDependencies": {
-    "eslint": "~1.2.0"
+    "chai": "^3.4.1",
+    "eslint": "~1.2.0",
+    "mocha": "^2.3.4"
   },
   "engines": {
     "node": ">=0.10.0"
