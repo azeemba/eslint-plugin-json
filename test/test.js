@@ -45,6 +45,10 @@ describe('plugin', function() {
             fileName: 'multipleErrors.json',
             text: '{ x: 200, \'what\': 0 }'
         };
+        var trailingText = {
+            fileName: 'trailingtext.json',
+            text: '{ "my_string": "hello world" }' + ' \n' +  'bad_text'
+        };
 
         var good = {
             fileName: 'good.json',
@@ -53,6 +57,7 @@ describe('plugin', function() {
         preprocess(singleQuotes.text, singleQuotes.fileName);
         preprocess(trailingCommas.text, trailingCommas.fileName);
         preprocess(multipleErrors.text, multipleErrors.fileName);
+        preprocess(trailingText.text, trailingText.fileName);
         preprocess(good.text, good.fileName);
 
         it('should return an error for the single quotes', function() {
@@ -73,6 +78,16 @@ describe('plugin', function() {
             var error = errors[0];
             assert.strictEqual(error.line, 1, 'should point to the first line');
             assert.strictEqual(error.column, 9, 'should point to the 9th character');
+        });
+
+        it('should report unrecoverable syntax error', function() {
+            var errors = postprocess([], trailingText.fileName);
+            assert.isArray(errors, 'should return an array');
+            assert.lengthOf(errors, 1, 'should return one error');
+            assert.isString(errors[0].message, 'should have a valid message');
+
+            // we don't validate the line/column numbers since they don't actually
+            // mean anything for this error. JSHint just bails on the file.
         });
 
         it('should return multiple errors for multiple errors', function() {
