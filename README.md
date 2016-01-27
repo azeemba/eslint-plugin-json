@@ -35,7 +35,7 @@ Add `json` to the plugins section of your `.eslintrc` configuration file. You ca
 You can run ESLint on individual JSON files or you can use the `--ext` flag to add JSON files to the list.
 
 ```
-eslint --ext .json --ext .js
+eslint . --ext .json --ext .js
 eslint example.json
 ```
 
