@@ -12,7 +12,7 @@
   "author": "Azeem Bande-Ali <a.bandeali@gmail.com>",
   "main": "lib/index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "./node_modules/.bin/mocha"
   },
   "repository": {
     "type": "git",
@@ -21,8 +21,8 @@
   "bugs": {
     "url": "https://github.com/azeemba/eslint-plugin-json/issues"
   },
-  "dependencies": {
-    "jshint": "^2.8.0"
+  "peerDependencies": {
+    "eslint": "^3.0.0"
   },
   "devDependencies": {
     "chai": "^3.4.1",
