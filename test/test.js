@@ -21,13 +21,14 @@ describe('plugin', function() {
     });
     describe('preprocess', function() {
         var preprocess = plugin.processors['.json'].preprocess;
-        it('should return the same text', function() {
+        it('should return the processable text', function() {
             var fileName = 'reallyLongFileName';
             var text = 'long long text';
+            var prefixedtext = 'var json = ' + text;
 
             var newText = preprocess(text, fileName);
             assert.isArray(newText, 'preprocess should return array');
-            assert.strictEqual(newText[0], text);
+            assert.strictEqual(newText[0], prefixedtext);
         });
     });
     describe('postprocess', function() {
@@ -49,6 +50,21 @@ describe('plugin', function() {
             fileName: 'trailingtext.json',
             text: '{ "my_string": "hello world" }' + ' \n' +  'bad_text'
         };
+
+        var ignorableMessages = [[
+            { ruleId: 'no-var', source: 'var json = {' },
+            { ruleId: 'no-unused-vars', source: 'var json = {' },
+            { ruleId: 'quotes', message: 'Strings must use singlequote.' },
+            { ruleId: 'semi' },
+            { ruleId: 'comma-dangle' }
+        ]];
+
+        var warnableMessages = [[
+            { ruleId: 'no-var', source: 'wrong' },
+            { ruleId: 'no-unused-vars', source: 'wrong' },
+            { ruleId: 'quotes', message: 'wrong' },
+            { ruleId: 'myrule' }
+        ]];
 
         var good = {
             fileName: 'good.json',
@@ -91,13 +107,13 @@ describe('plugin', function() {
         });
 
         it('should return multiple errors for multiple errors', function() {
-            var errors = postprocess([], multipleErrors.fileName);
+            var errors = postprocess(warnableMessages, multipleErrors.fileName);
             assert.isArray(errors, 'should return an array');
-            assert.lengthOf(errors, 2, 'should return one error');
+            assert.lengthOf(errors, 6, 'should return 6 errors');
         });
 
         it('should return no errors for good json', function() {
-            var errors = postprocess([], good.fileName);
+            var errors = postprocess(ignorableMessages, good.fileName);
             assert.isArray(errors, 'should return an array');
             assert.lengthOf(errors, 0, 'good json shouldnt have any errors');
         });
