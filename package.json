@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-json",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Lint JSON files",
   "keywords": [
     "eslint",
@@ -25,9 +25,9 @@
     "jshint": "^2.8.0"
   },
   "devDependencies": {
-    "chai": "^3.4.1",
-    "eslint": "~1.2.0",
-    "mocha": "^2.3.4"
+    "chai": "^4.1.2",
+    "eslint": "~5.1.0",
+    "mocha": "^5.2.0"
   },
   "engines": {
     "node": ">=0.10.0"
