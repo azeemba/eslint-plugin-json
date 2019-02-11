@@ -66,6 +66,9 @@ describe('plugin', function() {
             assert.lengthOf(errors, 1, 'should return one error');
 
             var error = errors[0];
+            assert.strictEqual(error.ruleId, '0', 'should have a string ID');
+            assert.strictEqual(error.severity, 2, 'should have a numeric severity');
+            assert.strictEqual(error.message, 'Property keys must be doublequoted', 'should have a message');
             assert.strictEqual(error.line, 1, 'should point to first line');
             assert.strictEqual(error.column, 2, 'should point to second character');
         });
