@@ -66,7 +66,7 @@ describe('plugin', function() {
             assert.lengthOf(errors, 1, 'should return one error');
 
             var error = errors[0];
-            assert.strictEqual(error.ruleId, '0', 'should have a string ID');
+            assert.strictEqual(error.ruleId, 'json/undefined', 'should have a string ID');
             assert.strictEqual(error.severity, 2, 'should have a numeric severity');
             assert.strictEqual(error.message, 'Property keys must be doublequoted', 'should have a message');
             assert.strictEqual(error.line, 1, 'should point to first line');
@@ -79,6 +79,7 @@ describe('plugin', function() {
             assert.lengthOf(errors, 1, 'should return one error');
 
             var error = errors[0];
+            assert.strictEqual(error.ruleId, 'json/trailingcomma', 'should have a string ID');
             assert.strictEqual(error.line, 1, 'should point to the first line');
             assert.strictEqual(error.column, 9, 'should point to the 9th character');
         });
