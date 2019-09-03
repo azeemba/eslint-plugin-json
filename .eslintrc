@@ -13,7 +13,8 @@
     "prettier/prettier": ["warn", {
       "singleQuote": true,
       "tabWidth": 4,
-      "printWidth": 100
+      "printWidth": 100,
+      "bracketSpacing": false
     }]
   }
 }

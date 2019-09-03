@@ -57,7 +57,7 @@ describe('plugin', function() {
 
         const good = {
             fileName: 'good.json',
-            text: JSON.stringify({ a: [1, 2, 3], b: 'cat', c: { x: 1 } })
+            text: JSON.stringify({a: [1, 2, 3], b: 'cat', c: {x: 1}})
         };
         preprocess(singleQuotes.text, singleQuotes.fileName);
         preprocess(trailingCommas.text, trailingCommas.fileName);
