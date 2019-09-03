@@ -12,7 +12,8 @@
   "author": "Azeem Bande-Ali <a.bandeali@gmail.com>",
   "main": "lib/index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "lint": "eslint lib test"
   },
   "repository": {
     "type": "git",
@@ -26,7 +27,7 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "~5.1.0",
+    "eslint": "^5.1.0",
     "mocha": "^5.2.0"
   },
   "engines": {
