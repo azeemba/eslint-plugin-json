@@ -1,5 +1,6 @@
 const plugin = require('../lib/index.js');
 const assert = require('chai').assert;
+const _ = require('lodash/fp');
 
 describe('plugin', function() {
     describe('structure', function() {
@@ -27,17 +28,45 @@ describe('plugin', function() {
     describe('preprocess', function() {
         const preprocess = plugin.processors['.json'].preprocess;
         it('should return the same text', function() {
-            const fileName = 'reallyLongFileName';
-            const text = 'long long text';
+            const fileName = 'whatever-the-name.js';
 
-            const newText = preprocess(text, fileName);
+            const newText = preprocess('whatever', fileName);
             assert.isArray(newText, 'preprocess should return array');
-            assert.strictEqual(newText[0], text);
+            assert.strictEqual(newText[0], '');
         });
     });
     describe('postprocess', function() {
         const preprocess = plugin.processors['.json'].preprocess;
         const postprocess = plugin.processors['.json'].postprocess;
+
+        const messageErrorFieldFromContextError = {
+            ruleId: _.get('ruleId'),
+            severity: _.getOr(1, 'severity'),
+            message: _.get('message'),
+            line: _.get('loc.start.line'),
+            column: _.get('loc.start.column'),
+            nodeType: _.getOr(null, 'nodeType'),
+            endLine: _.get('loc.end.line'),
+            endColumn: _.get('loc.end.column')
+        };
+        const convertContextErrorToMessageError = err =>
+            _.mapValues(extractor => extractor(err), messageErrorFieldFromContextError);
+        const fakeApplyRule = rules => file => {
+            const errors = [];
+            rules.forEach(rule => {
+                const xxx = rule.create({
+                    getFilename() {
+                        return file;
+                    },
+                    report(err) {
+                        errors.push(err);
+                    }
+                });
+                xxx.Program();
+            });
+            return [errors.map(convertContextErrorToMessageError)];
+        };
+
         const singleQuotes = {
             fileName: 'singleQuotes.json',
             text: "{'x': 0}"
@@ -59,20 +88,24 @@ describe('plugin', function() {
             fileName: 'good.json',
             text: JSON.stringify({a: [1, 2, 3], b: 'cat', c: {x: 1}})
         };
-        preprocess(singleQuotes.text, singleQuotes.fileName);
-        preprocess(trailingCommas.text, trailingCommas.fileName);
-        preprocess(multipleErrors.text, multipleErrors.fileName);
-        preprocess(trailingText.text, trailingText.fileName);
-        preprocess(good.text, good.fileName);
+
+        const rules = ['undefined', 'trailing-comma'];
+        const lintFile = fakeApplyRule(rules.map(rule => plugin.rules[rule]));
+        const samples = [singleQuotes, trailingCommas, multipleErrors, trailingText, good];
+        samples.forEach(sample => preprocess(sample.text, sample.fileName));
+
+        const errorsByFile = _.fromPairs(
+            samples.map(sample => [sample.fileName, lintFile(sample.fileName)])
+        );
 
         it('should return an error for the single quotes', function() {
-            const errors = postprocess([], singleQuotes.fileName);
+            const errors = postprocess(errorsByFile[singleQuotes.fileName], singleQuotes.fileName);
             assert.isArray(errors, 'should return an array');
             assert.lengthOf(errors, 1, 'should return one error');
 
             const error = errors[0];
             assert.strictEqual(error.ruleId, 'json/undefined', 'should have a string ID');
-            assert.strictEqual(error.severity, 2, 'should have a numeric severity');
+            assert.strictEqual(error.severity, 1, 'should have a numeric severity');
             assert.strictEqual(
                 error.message,
                 'Property keys must be doublequoted',
@@ -83,7 +116,10 @@ describe('plugin', function() {
         });
 
         it('should return an error for trailing commas', function() {
-            const errors = postprocess([], trailingCommas.fileName);
+            const errors = postprocess(
+                errorsByFile[trailingCommas.fileName],
+                trailingCommas.fileName
+            );
             assert.isArray(errors, 'should return an array');
             assert.lengthOf(errors, 1, 'should return one error');
 
@@ -94,7 +130,7 @@ describe('plugin', function() {
         });
 
         it('should report unrecoverable syntax error', function() {
-            const errors = postprocess([], trailingText.fileName);
+            const errors = postprocess(errorsByFile[trailingText.fileName], trailingText.fileName);
             assert.isArray(errors, 'should return an array');
             assert.lengthOf(errors, 1, 'should return one error');
             assert.isString(errors[0].message, 'should have a valid message');
@@ -104,13 +140,16 @@ describe('plugin', function() {
         });
 
         it('should return multiple errors for multiple errors', function() {
-            const errors = postprocess([], multipleErrors.fileName);
+            const errors = postprocess(
+                errorsByFile[multipleErrors.fileName],
+                multipleErrors.fileName
+            );
             assert.isArray(errors, 'should return an array');
             assert.lengthOf(errors, 2, 'should return one error');
         });
 
         it('should return no errors for good json', function() {
-            const errors = postprocess([], good.fileName);
+            const errors = postprocess(errorsByFile[good.fileName], good.fileName);
             assert.isArray(errors, 'should return an array');
             assert.lengthOf(errors, 0, 'good json shouldnt have any errors');
         });
