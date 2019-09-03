@@ -23,7 +23,7 @@
     "url": "https://github.com/azeemba/eslint-plugin-json/issues"
   },
   "dependencies": {
-    "vscode-json-languageservice": "^3.2.1"
+    "vscode-json-languageservice": "^3.3.3"
   },
   "devDependencies": {
     "chai": "^4.2.0",
