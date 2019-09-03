@@ -1,7 +1,10 @@
 language: node_js
 node_js:
-  - node
-  - lts/*
+  - '8.10'
+  - '8'
+  - '10'
+  - '12'
 script:
   - npm run lint
   - npm test
+cache: npm
