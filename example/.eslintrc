@@ -1,8 +1,8 @@
 {
   "plugins": ["json"],
   "rules": {
-      "json/duplicate-key": "error",
       "json/*": "warn",
+      "json/duplicate-key": "error",
       "json/trailing-comma": "error",
       "json/comment-not-permitted": "warn"
   }
