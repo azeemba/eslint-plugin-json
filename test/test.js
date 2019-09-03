@@ -1,4 +1,3 @@
-
 const plugin = require('../lib/index.js');
 const assert = require('chai').assert;
 
@@ -11,12 +10,18 @@ describe('plugin', function() {
             assert.property(plugin.processors, '.json', '.json property is not defined');
         });
         it('should contain .json.preprocess property', function() {
-            assert.property(plugin.processors['.json'], 'preprocess',
-                '.json.preprocess is not defined');
+            assert.property(
+                plugin.processors['.json'],
+                'preprocess',
+                '.json.preprocess is not defined'
+            );
         });
         it('should contain .json.postprocess property', function() {
-            assert.property(plugin.processors['.json'], 'postprocess',
-                '.json.postprocess is not defined');
+            assert.property(
+                plugin.processors['.json'],
+                'postprocess',
+                '.json.postprocess is not defined'
+            );
         });
     });
     describe('preprocess', function() {
@@ -43,16 +48,16 @@ describe('plugin', function() {
         };
         const multipleErrors = {
             fileName: 'multipleErrors.json',
-            text: '{ x: 200, \'what\': 0 }'
+            text: "{ x: 200, 'what': 0 }"
         };
         const trailingText = {
             fileName: 'trailingtext.json',
-            text: '{ "my_string": "hello world" }' + ' \n' +  'bad_text'
+            text: '{ "my_string": "hello world" }' + ' \n' + 'bad_text'
         };
 
         const good = {
             fileName: 'good.json',
-            text: JSON.stringify({ a: [1, 2, 3], b: 'cat', c: {x: 1} })
+            text: JSON.stringify({ a: [1, 2, 3], b: 'cat', c: { x: 1 } })
         };
         preprocess(singleQuotes.text, singleQuotes.fileName);
         preprocess(trailingCommas.text, trailingCommas.fileName);
@@ -68,7 +73,11 @@ describe('plugin', function() {
             const error = errors[0];
             assert.strictEqual(error.ruleId, 'json/undefined', 'should have a string ID');
             assert.strictEqual(error.severity, 2, 'should have a numeric severity');
-            assert.strictEqual(error.message, 'Property keys must be doublequoted', 'should have a message');
+            assert.strictEqual(
+                error.message,
+                'Property keys must be doublequoted',
+                'should have a message'
+            );
             assert.strictEqual(error.line, 1, 'should point to first line');
             assert.strictEqual(error.column, 2, 'should point to second character');
         });

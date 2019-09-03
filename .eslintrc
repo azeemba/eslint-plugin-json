@@ -7,6 +7,13 @@
   "parserOptions": {
     "ecmaVersion": 2017
   },
-  "extends": "eslint:recommended",
-  "rules": {}
+  "plugins": ["prettier"],
+  "extends": ["eslint:recommended"],
+  "rules": {
+    "prettier/prettier": ["warn", {
+      "singleQuote": true,
+      "tabWidth": 4,
+      "printWidth": 100
+    }]
+  }
 }
