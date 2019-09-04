@@ -1,6 +1,6 @@
 #!/bin/bash
 
-JSON_PLUGIN_NAME=json
+JSON_PLUGIN_NAME=json-beta
 COUNT_FILE=$(mktemp)
 
 echo 0 > $COUNT_FILE

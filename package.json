@@ -1,6 +1,6 @@
 {
-  "name": "eslint-plugin-json",
-  "version": "1.4.0",
+  "name": "eslint-plugin-json-beta",
+  "version": "2.0.0-alpha.1",
   "description": "Lint JSON files",
   "keywords": [
     "eslint",

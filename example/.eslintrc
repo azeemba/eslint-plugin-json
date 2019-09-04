@@ -1,15 +1,15 @@
 {
-  "plugins": ["json"],
+  "plugins": ["json-beta"],
   "rules": {
-      "json/*": ["warn"],
-      "json/duplicate-key": "error",
-      "json/trailing-comma": "error"
+      "json-beta/*": ["warn"],
+      "json-beta/duplicate-key": "error",
+      "json-beta/trailing-comma": "error"
     },
     "overrides": [
         {
             "files": ["samples/jsonc.json"],
             "rules": {
-                "json/json": ["warn", {"allowComments": true}]
+                "json-beta/json": ["warn", {"allowComments": true}]
             }
         }
     ]
