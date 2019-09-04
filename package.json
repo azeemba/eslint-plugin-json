@@ -13,7 +13,8 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "mocha",
-    "lint": "eslint lib test"
+    "lint": "eslint lib test",
+    "integration-tests": "(cd example && ./integration-test.sh)"
   },
   "repository": {
     "type": "git",

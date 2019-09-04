@@ -7,4 +7,5 @@ node_js:
 script:
   - npm run lint
   - npm test
+  - npm run integration-tests
 cache: npm
