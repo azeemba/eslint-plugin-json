@@ -11,8 +11,8 @@ function s() {
 }
 
 function lint_file() {
-    local file=samples/$1.json
-    if [ ! -f $file ]; then return 1; fi
+    local file=$1
+    if [ ! -f "$file" ]; then return 1; fi
     npm run lint -- $file 2> /dev/null
 }
 function check() {
@@ -28,7 +28,12 @@ function check() {
     fi
 }
 function check_file() {
-    local file="$1" type="$2" error_name="$3" count="$4"
+    local file="samples/$1.json" type="$2" error_name="$3" count="$4"
+    if [ ! -f "$file" ]; then
+        echo "Unexisting file $1 ($file)"
+        increment_error_count
+        return 1
+    fi
     lint_file "$file" | check "$type" "$error_name" "$count" "'$file'"
 }
 
@@ -39,7 +44,8 @@ check_file duplicate-keys error "$json/duplicate-key" 2
 check_file wrong-syntax warning "$json/*" 1
 check_file whole-mess error "$json/duplicate-key" 2
 check_file whole-mess error "$json/trailing-comma" 1
-check_file whole-mess "*" "$json/comment-not-permitted" 0 # eslint now tell to allow comments
+check_file whole-mess warning "$json/*" 1 # as comment-not-permitted
+check_file jsonc "*" "$json/json" 0 # comment allowed
 
 error_count=$(< $count_file)
 echo
