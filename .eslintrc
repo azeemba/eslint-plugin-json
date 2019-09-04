@@ -15,6 +15,7 @@
       "tabWidth": 4,
       "printWidth": 100,
       "bracketSpacing": false
-    }]
+    }],
+    "no-console": "error"
   }
 }
