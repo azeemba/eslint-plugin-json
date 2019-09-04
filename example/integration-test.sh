@@ -28,8 +28,8 @@ function check() {
     fi
 }
 function check_file() {
-    local file=$1 type=$2 error_name=$3 count=$4
-    lint_file $file | check $type $error_name $count "'$file'"
+    local file="$1" type="$2" error_name="$3" count="$4"
+    lint_file "$file" | check "$type" "$error_name" "$count" "'$file'"
 }
 
 json=json
@@ -39,7 +39,7 @@ check_file duplicate-keys error "$json/duplicate-key" 2
 check_file wrong-syntax warning "$json/*" 1
 check_file whole-mess error "$json/duplicate-key" 2
 check_file whole-mess error "$json/trailing-comma" 1
-check_file whole-mess warning "$json/comment-not-permitted" 1
+check_file whole-mess "*" "$json/comment-not-permitted" 0 # eslint now tell to allow comments
 
 error_count=$(< $count_file)
 echo
