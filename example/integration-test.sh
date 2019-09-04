@@ -32,7 +32,7 @@ function check_file() {
     lint_file $file | check $type $error_name $count "'$file'"
 }
 
-json=json
+json=json-beta
 check_file good-json warning "$json/" 0
 check_file good-json warning "$json/" 0
 check_file duplicate-keys error "$json/duplicate-key" 2

@@ -1,9 +1,9 @@
 {
-  "plugins": ["json"],
+  "plugins": ["json-beta"],
   "rules": {
-      "json/*": "warn",
-      "json/duplicate-key": "error",
-      "json/trailing-comma": "error",
-      "json/comment-not-permitted": "warn"
+      "json-beta/*": "warn",
+      "json-beta/duplicate-key": "error",
+      "json-beta/trailing-comma": "error",
+      "json-beta/comment-not-permitted": "warn"
   }
 }

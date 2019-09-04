@@ -11,6 +11,6 @@
   "license": "ISC",
   "devDependencies": {
     "eslint": "^6.3.0",
-    "eslint-plugin-json": ".."
+    "eslint-plugin-json-beta": ".."
   }
 }
