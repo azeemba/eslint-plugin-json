@@ -1,7 +1,7 @@
 {
   "name": "eslint-plugin-json",
   "version": "1.4.0",
-  "description": "Lint JSON files",
+  "description": "eslint plugin for JSON files",
   "keywords": [
     "eslint",
     "eslintplugin",
@@ -10,6 +10,9 @@
     "eslint-plugin-json"
   ],
   "author": "Azeem Bande-Ali <a.bandeali@gmail.com>",
+  "contributors": [
+    "Adriean Khisbe <adriean.khisbe@live.fr> (https://github.com/AdrieanKhisbe/)"
+  ],
   "main": "lib/index.js",
   "scripts": {
     "test": "mocha",
