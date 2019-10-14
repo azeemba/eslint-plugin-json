@@ -1,5 +1,7 @@
 test
-example
+examples
+private
+tmp
 .npmignore
 .eslintrc
 .travis.yml

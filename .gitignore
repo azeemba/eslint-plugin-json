@@ -1,3 +1,4 @@
 node_modules
 private
+tmp
 example/package-lock.json
