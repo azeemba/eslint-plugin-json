@@ -6,7 +6,7 @@ node_js:
   - '12'
 install:
   - npm install
-  - (cd example && npm install)
+  - (cd examples && npm install)
 script:
   - npm run lint
   - npm test

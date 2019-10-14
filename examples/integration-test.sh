@@ -46,7 +46,7 @@ check_file wrong-syntax warning "*" 1
 check_file whole-mess error "duplicate-key" 2
 check_file whole-mess error "trailing-comma" 1
 check_file whole-mess warning "*" 1 # as comment-not-permitted
-check_file jsonc "*" "json" 0 # comment allowed
+check_file json-with-comments "*" "json" 0 # comment allowed
 
 error_count=$(< $COUNT_FILE)
 echo
