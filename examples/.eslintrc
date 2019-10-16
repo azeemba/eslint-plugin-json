@@ -7,9 +7,9 @@
     },
     "overrides": [
         {
-            "files": ["samples/jsonc.json"],
+            "files": ["samples/json-with-comments.json"],
             "rules": {
-                "json/json": ["warn", {"allowComments": true}]
+                "json/*": ["warn", {"allowComments": true}]
             }
         }
     ]

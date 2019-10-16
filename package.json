@@ -17,7 +17,7 @@
   "scripts": {
     "test": "mocha",
     "lint": "eslint lib test",
-    "integration-tests": "(cd examples && ./integration-test.sh)"
+    "integration-tests": "(cd examples && npm run test)"
   },
   "repository": {
     "type": "git",
