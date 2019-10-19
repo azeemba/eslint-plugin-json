@@ -18,7 +18,7 @@ const jsonServiceHandle = jsonService.getLanguageService({});
 // Plugin Definition
 //------------------------------------------------------------------------------
 
-const ErrorCode = {
+const ErrorCodes = {
     Undefined: 0,
     EnumValueMismatch: 1,
     UnexpectedEndOfComment: 0x101,
@@ -39,7 +39,7 @@ const ErrorCode = {
     SchemaResolveError: 0x300
 };
 
-const AllErrorCodes = _.values(ErrorCode);
+const AllErrorCodes = _.values(ErrorCodes);
 const AllowComments = 'allowComments';
 
 const fileLintResults = {};
@@ -95,7 +95,7 @@ const makeRule = (errorName, reporters) => ({
     }
 });
 
-module.exports.rules = _.pipe(
+const rules = _.pipe(
     _.mapKeys(_.kebabCase),
     _.toPairs,
     _.map(([errorName, errorCode]) => [
@@ -109,7 +109,7 @@ module.exports.rules = _.pipe(
         unknown: makeRule('unknown', reportError(_.negate(AllErrorCodes.includes))),
         'comment-not-permitted': makeRule('comment-not-permitted', reportComment)
     })
-)(ErrorCode);
+)(ErrorCodes);
 
 const errorSignature = err =>
     ['message', 'line', 'column', 'endLine', 'endColumn'].map(field => err[field]).join('::');
@@ -120,7 +120,7 @@ const getErrorCode = _.pipe(
     _.last
 );
 
-module.exports.processors = {
+const processors = {
     '.json': {
         preprocess: function(text, fileName) {
             const textDocument = jsonService.TextDocument.create(fileName, 'json', 1, text);
@@ -165,3 +165,5 @@ module.exports.processors = {
         }
     }
 };
+
+module.exports = {rules, processors};
