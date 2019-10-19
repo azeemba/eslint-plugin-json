@@ -46,21 +46,18 @@ const fileLintResults = {};
 const fileComments = {};
 const fileDocuments = {};
 
-function getDiagnostics(jsonDocument) {
-    const diagnostics = [];
-    const added = {};
+const getSignature = problem =>
+    `${problem.range.start.line} ${problem.range.start.character} ${problem.message}`;
 
-    jsonDocument.syntaxErrors.forEach(problem => {
-        const signature = `${problem.range.start.line} ${problem.range.start.character} ${problem.message}`;
-        if (!added[signature]) {
-            added[signature] = true;
-            diagnostics.push(problem);
-        }
-    });
-    return diagnostics;
+function getDiagnostics(jsonDocument) {
+    return _.pipe(
+        _.map(problem => [getSignature(problem), problem]),
+        _.reverse, // reverse ensure fromPairs keep first signature occurence of problem
+        _.fromPairs
+    )(jsonDocument.syntaxErrors);
 }
 const reportError = filter => (errorName, context) => {
-    fileLintResults[context.getFilename()].filter(filter).forEach(error => {
+    _.filter(filter, fileLintResults[context.getFilename()]).forEach(error => {
         context.report({
             ruleId: `json/${errorName}`,
             message: error.message,
@@ -76,7 +73,7 @@ const reportComment = (errorName, context) => {
     const ruleOption = _.head(context.options);
     if (ruleOption === AllowComments || _.get(AllowComments, ruleOption)) return;
 
-    fileComments[context.getFilename()].forEach(comment => {
+    _.forEach(comment => {
         context.report({
             ruleId: errorName,
             message: 'Comment not allowed',
@@ -85,7 +82,7 @@ const reportComment = (errorName, context) => {
                 end: {line: comment.end.line + 1, column: comment.end.character}
             }
         });
-    });
+    }, fileComments[context.getFilename()]);
 };
 
 const makeRule = (errorName, reporters) => ({
