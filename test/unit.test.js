@@ -1,5 +1,5 @@
-const plugin = require('../src/index.js');
-const assert = require('chai').assert;
+const plugin = require('../src');
+const {assert} = require('chai');
 const _ = require('lodash/fp');
 
 describe('plugin', function() {
