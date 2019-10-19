@@ -1,4 +1,4 @@
-const plugin = require('../lib/index.js');
+const plugin = require('../src/index.js');
 const assert = require('chai').assert;
 const _ = require('lodash/fp');
 
