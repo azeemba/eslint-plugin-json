@@ -1,0 +1,5 @@
+{
+  "all": true,
+  "include": ["src"],
+  "reporter": ["text", "text-summary", "lcov"]
+}

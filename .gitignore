@@ -1,4 +1,6 @@
 node_modules
 private
 tmp
+coverage
+.nyc_output
 example/package-lock.json
