@@ -44,5 +44,5 @@
     "node": ">=8.10.0"
   },
   "url": "https://github.com/azeemba/eslint-plugin-json",
-  "license": "ISC"
+  "license": "MIT"
 }

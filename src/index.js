@@ -1,22 +1,7 @@
-/**
- * @fileoverview Lint JSON files
- * @author Azeem Bande-Ali
- * @copyright 2015 Azeem Bande-Ali. All rights reserved.
- * See LICENSE file in root directory for full license.
- */
-
-//------------------------------------------------------------------------------
-// Requirements
-//------------------------------------------------------------------------------
-
-const jsonService = require('vscode-json-languageservice');
 const _ = require('lodash/fp');
+const jsonService = require('vscode-json-languageservice');
 
 const jsonServiceHandle = jsonService.getLanguageService({});
-
-//------------------------------------------------------------------------------
-// Plugin Definition
-//------------------------------------------------------------------------------
 
 const ErrorCodes = {
     Undefined: 0,
