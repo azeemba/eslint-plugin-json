@@ -1,0 +1,22 @@
+{
+  "plugins": ["self"],
+  "rules": {
+      "self/*": "warn",
+      "self/duplicate-key": "error",
+      "self/trailing-comma": "error"
+    },
+    "overrides": [
+        {
+            "files": ["samples/json-with-comments.json"],
+            "rules": {
+                "self/*": ["warn", {"allowComments": true}]
+            }
+        },
+        {
+            "files": ["samples/wrong-syntax.json"],
+            "rules": {
+                "self/*": "error"
+            }
+        }
+    ]
+}

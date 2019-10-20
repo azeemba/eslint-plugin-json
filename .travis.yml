@@ -1,4 +1,14 @@
 language: node_js
 node_js:
-  - node
-  - lts/*
+  - '8.10'
+  - '8'
+  - '10'
+  - '12'
+install:
+  - npm install
+script:
+  - npm run lint
+  - npm test
+after_success:
+  - codecov
+cache: npm

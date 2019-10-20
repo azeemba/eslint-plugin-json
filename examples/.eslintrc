@@ -1,0 +1,16 @@
+{
+  "plugins": ["json"],
+  "rules": {
+      "json/*": ["warn"],
+      "json/duplicate-key": "error",
+      "json/trailing-comma": "error"
+    },
+    "overrides": [
+        {
+            "files": ["samples/json-with-comments.json"],
+            "rules": {
+                "json/*": ["warn", {"allowComments": true}]
+            }
+        }
+    ]
+}

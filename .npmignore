@@ -1,5 +1,8 @@
-.npmignore
-.eslintrc.json
-.travis.yml
 test
+examples
+private
+tmp
+.npmignore
+.eslintrc
+.travis.yml
 .vscode

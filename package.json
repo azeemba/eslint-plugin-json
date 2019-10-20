@@ -1,7 +1,7 @@
 {
   "name": "eslint-plugin-json",
   "version": "1.4.0",
-  "description": "Lint JSON files",
+  "description": "eslint plugin for JSON files",
   "keywords": [
     "eslint",
     "eslintplugin",
@@ -10,9 +10,13 @@
     "eslint-plugin-json"
   ],
   "author": "Azeem Bande-Ali <a.bandeali@gmail.com>",
-  "main": "lib/index.js",
+  "contributors": [
+    "Adriean Khisbe <adriean.khisbe@live.fr> (https://github.com/AdrieanKhisbe/)"
+  ],
+  "main": "src/index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "nyc mocha",
+    "lint": "eslint src test"
   },
   "repository": {
     "type": "git",
@@ -22,16 +26,23 @@
     "url": "https://github.com/azeemba/eslint-plugin-json/issues"
   },
   "dependencies": {
-    "vscode-json-languageservice": "^3.2.1"
+    "lodash": "^4.17.15",
+    "vscode-json-languageservice": "^3.3.5"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "~5.1.0",
-    "mocha": "^5.2.0"
+    "codecov": "^3.6.1",
+    "eslint": "^6.5.1",
+    "eslint-config-prettier": "^6.4.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-self": "^1.2.0",
+    "mocha": "^6.2.1",
+    "nyc": "^14.1.1",
+    "prettier": "^1.18.2"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=8.10.0"
   },
   "url": "https://github.com/azeemba/eslint-plugin-json",
-  "license": "ISC"
+  "license": "MIT"
 }
