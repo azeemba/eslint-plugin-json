@@ -6,3 +6,4 @@ tmp
 .eslintrc
 .travis.yml
 .vscode
+.nycrc
