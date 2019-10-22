@@ -151,4 +151,19 @@ const processors = {
     }
 };
 
-module.exports = {rules, processors};
+const configs = {
+    recommended: {
+        plugins: ['json'],
+        rules: {
+            'json/*': 'error'
+        }
+    },
+    'recommended-with-comments': {
+        plugins: ['json'],
+        rules: {
+            'json/*': ['error', {allowComments: true}]
+        }
+    }
+};
+
+module.exports = {rules, configs, processors};
