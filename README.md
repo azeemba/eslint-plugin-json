@@ -10,12 +10,17 @@
 
 ## Installation
 
-Install `eslint--plugni-json` along [`eslint`](http://eslint.org):
+Install `eslint-plugin-json` along [`eslint`](http://eslint.org):
 
 ```shell
 $ npm install --save-dev eslint eslint-plugin-json
 ```
 
+or
+
+```shell
+$ yarn add --dev eslint eslint-plugin-json
+```
 
 **Note:** If you installed ESLint globally (using the `-g` flag) then you must also install `eslint-plugin-json` globally.
 
