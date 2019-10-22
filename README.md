@@ -14,11 +14,7 @@ Install `eslint-plugin-json` along [`eslint`](http://eslint.org):
 
 ```shell
 $ npm install --save-dev eslint eslint-plugin-json
-```
-
-or
-
-```shell
+# or
 $ yarn add --dev eslint eslint-plugin-json
 ```
 
@@ -28,28 +24,32 @@ $ yarn add --dev eslint eslint-plugin-json
 
 ### Basic configuration
 
-Add `json` to the plugins section of your `.eslintrc` configuration file. (You can omit the `eslint-plugin-` prefix)
-Then activate the rules you want. If you want them all, add the `json/json` rule (or its alias `json/*`)
+The `json` plugin ship with two recommended config you can use to easily activate it via the `extends` key.
+It comes in two flavor: one strict (`recommended`) and one allowing comments `recommended-with-comments`.
+
 
 ```json
 {
-    "plugins": [
-        "json"
-    ],
-    "rules": {
-        "json/*": "error"
-    }
+    "extends": ["plugin:json/recommended"]
 }
 ```
 
 You can run ESLint on individual JSON files or you can use the `--ext` flag to add JSON files to the list.
 
 ```
-eslint . --ext .json --ext .js
+eslint . --ext .json,.js
 eslint example.json
 ```
 
-### Configuration
+### Custom Configuration
+
+If you want more granular control over which rules, and wich severity you want
+
+Add `json` to the list of plugins (You can omit the `eslint-plugin-` prefix)
+Then pick your rules.
+
+If you want them all, add the `json/json` rule (or its alias `json/*`). (this is what the `recommended` config does)
+
 #### Global rules
 The global rules (`json/json` or its alias `json/*`) activate all the rules.
 Note it can be configured to ignore errors cause by comments.
