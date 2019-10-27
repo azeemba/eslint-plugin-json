@@ -119,7 +119,7 @@ which the VSCode implementation provides by leveraging the
 
 #### Will this plugin provide more configuration?
 
-It is now possible as you can see in the [Configuration section](#configuration)
+It is now possible as you can see in the [Configuration section](#custom-configuration)
 
 Additionally, support for autofixing common errors could be added in the feature.
 
