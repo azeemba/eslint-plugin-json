@@ -44,13 +44,7 @@ function validateInfringementExpectation(expected, actualSituation) {
             );
         else expect(actualSituation).to.have.property(scoped(rule));
     }
-    const allExpectedErrors = expected.map(
-        _.pipe(
-            _.split(':'),
-            _.head,
-            scoped
-        )
-    );
+    const allExpectedErrors = expected.map(_.pipe(_.split(':'), _.head, scoped));
     expect(_.xor(_.keys(actualSituation), allExpectedErrors)).to.have.length(
         0,
         'Extra errors found'

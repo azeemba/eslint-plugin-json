@@ -85,7 +85,10 @@ const rules = _.pipe(
     _.toPairs,
     _.map(([errorName, errorCode]) => [
         errorName,
-        makeRule(errorName, reportError(err => err.code === errorCode))
+        makeRule(
+            errorName,
+            reportError(err => err.code === errorCode)
+        )
     ]),
     _.fromPairs,
     _.assign({
@@ -99,11 +102,7 @@ const rules = _.pipe(
 const errorSignature = err =>
     ['message', 'line', 'column', 'endLine', 'endColumn'].map(field => err[field]).join('::');
 
-const getErrorCode = _.pipe(
-    _.get('ruleId'),
-    _.split('/'),
-    _.last
-);
+const getErrorCode = _.pipe(_.get('ruleId'), _.split('/'), _.last);
 
 const processors = {
     '.json': {

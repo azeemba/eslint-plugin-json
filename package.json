@@ -27,18 +27,18 @@
   },
   "dependencies": {
     "lodash": "^4.17.15",
-    "vscode-json-languageservice": "^3.3.5"
+    "vscode-json-languageservice": "^3.4.12"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "codecov": "^3.6.1",
-    "eslint": "^6.5.1",
-    "eslint-config-prettier": "^6.4.0",
-    "eslint-plugin-prettier": "^3.1.1",
+    "codecov": "^3.6.5",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-self": "^1.2.0",
-    "mocha": "^6.2.1",
-    "nyc": "^14.1.1",
-    "prettier": "^1.18.2"
+    "mocha": "^7.0.1",
+    "nyc": "^15.0.0",
+    "prettier": "^1.19.1"
   },
   "engines": {
     "node": ">=8.10.0"
