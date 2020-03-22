@@ -104,6 +104,9 @@ const errorSignature = err =>
 
 const getErrorCode = _.pipe(_.get('ruleId'), _.split('/'), _.last);
 
+const preprocessorPlaceholder = '___';
+const preprocessorTemplate = `JSON.stringify(${preprocessorPlaceholder})`;
+
 const processors = {
     '.json': {
         preprocess: function(text, fileName) {
@@ -112,7 +115,15 @@ const processors = {
             const parsed = jsonServiceHandle.parseJSONDocument(textDocument);
             fileLintResults[fileName] = getDiagnostics(parsed);
             fileComments[fileName] = parsed.comments;
-            return ['']; // sorry nothing ;)
+
+            let lastLineEnding = '';
+            ['\n', '\r'].forEach(char => {
+                if (text.endsWith(char)) {
+                    lastLineEnding = char + lastLineEnding;
+                    text = text.slice(0, -1);
+                }
+            });
+            return [preprocessorTemplate.replace(preprocessorPlaceholder, text) + lastLineEnding];
         },
         postprocess: function(messages, fileName) {
             const textDocument = fileDocuments[fileName];
@@ -142,6 +153,21 @@ const processors = {
                         source,
                         column: error.column + 1,
                         endColumn: error.endColumn + 1
+                    });
+                }),
+                _.mapValues(error => {
+                    const prefixLength = preprocessorTemplate.indexOf(preprocessorPlaceholder);
+
+                    let fix;
+                    if (error.fix) {
+                        fix = _.assign(error.fix, {
+                            range: error.fix.range.map(location => location - prefixLength)
+                        });
+                    }
+                    return _.assign(error, {
+                        column: error.column - (error.line === 1 ? prefixLength : 0),
+                        endColumn: error.endColumn - (error.endLine === 1 ? prefixLength : 0),
+                        fix
                     });
                 }),
                 _.values

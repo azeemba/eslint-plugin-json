@@ -27,12 +27,13 @@ describe('plugin', function() {
     });
     describe('preprocess', function() {
         const preprocess = plugin.processors['.json'].preprocess;
-        it('should return the same text', function() {
+        it('should contain the text', function() {
             const fileName = 'whatever-the-name.js';
 
-            const newText = preprocess('whatever', fileName);
+            const text = 'whatever';
+            const newText = preprocess(text, fileName);
             assert.isArray(newText, 'preprocess should return array');
-            assert.strictEqual(newText[0], '');
+            assert.include(newText[0], text);
         });
     });
     describe('postprocess', function() {
@@ -92,7 +93,9 @@ describe('plugin', function() {
         const rules = ['undefined', 'trailing-comma'];
         const lintFile = fakeApplyRule(rules.map(rule => plugin.rules[rule]));
         const samples = [singleQuotes, trailingCommas, multipleErrors, trailingText, good];
-        samples.forEach(sample => preprocess(sample.text, sample.fileName));
+        samples.forEach(sample => {
+            sample.text = preprocess(sample.text, sample.fileName)[0];
+        });
 
         const errorsByFile = _.fromPairs(
             samples.map(sample => [sample.fileName, lintFile(sample.fileName)])
