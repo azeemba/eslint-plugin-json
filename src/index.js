@@ -116,14 +116,13 @@ const processors = {
             fileLintResults[fileName] = getDiagnostics(parsed);
             fileComments[fileName] = parsed.comments;
 
-            let lastLineEnding = '';
-            ['\n', '\r'].forEach(char => {
-                if (text.endsWith(char)) {
-                    lastLineEnding = char + lastLineEnding;
-                    text = text.slice(0, -1);
-                }
-            });
-            return [preprocessorTemplate.replace(preprocessorPlaceholder, text) + lastLineEnding];
+            const [, eol = ''] = text.match(/([\n\r]{0,2})?$/);
+            return [
+                preprocessorTemplate.replace(
+                    preprocessorPlaceholder,
+                    text.slice(0, text.length - eol.length)
+                ) + eol
+            ];
         },
         postprocess: function(messages, fileName) {
             const textDocument = fileDocuments[fileName];
@@ -156,18 +155,17 @@ const processors = {
                     });
                 }),
                 _.mapValues(error => {
+                    if (_.startsWith('json/', error.ruleId)) return error;
                     const prefixLength = preprocessorTemplate.indexOf(preprocessorPlaceholder);
 
-                    let fix;
-                    if (error.fix) {
-                        fix = _.assign(error.fix, {
-                            range: error.fix.range.map(location => location - prefixLength)
-                        });
-                    }
                     return _.assign(error, {
                         column: error.column - (error.line === 1 ? prefixLength : 0),
                         endColumn: error.endColumn - (error.endLine === 1 ? prefixLength : 0),
-                        fix
+                        fix:
+                            error.fix &&
+                            _.assign(error.fix, {
+                                range: error.fix.range.map(location => location - prefixLength)
+                            })
                     });
                 }),
                 _.values
