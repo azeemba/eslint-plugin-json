@@ -23,6 +23,11 @@ const ErrorCodes = {
     CommentNotPermitted: 0x209,
     SchemaResolveError: 0x300
 };
+const CodesToError = _.pipe(
+    _.toPairs,
+    _.map(([err, code]) => [code, _.kebabCase(err)]),
+    _.fromPairs
+)(ErrorCodes);
 
 const AllErrorCodes = _.values(ErrorCodes);
 const AllowComments = 'allowComments';
@@ -43,9 +48,10 @@ function getDiagnostics(jsonDocument) {
 }
 const reportError = filter => (errorName, context) => {
     _.filter(filter, fileLintResults[context.getFilename()]).forEach(error => {
+        const errorName = CodesToError[error.code] || 'unknown';
+        // !FIXME: context.options: cf ruleoption allowcomment
         context.report({
-            ruleId: `json/${errorName}`,
-            message: error.message,
+            message: `${error.message} [${errorName}]`,
             loc: {
                 start: {line: error.range.start.line + 1, column: error.range.start.character},
                 end: {line: error.range.end.line + 1, column: error.range.end.character}
@@ -60,7 +66,6 @@ const reportComment = (errorName, context) => {
 
     _.forEach(comment => {
         context.report({
-            ruleId: errorName,
             message: 'Comment not allowed',
             loc: {
                 start: {line: comment.start.line + 1, column: comment.start.character},
@@ -122,7 +127,18 @@ const processors = {
                 _.first,
                 _.groupBy(errorSignature),
                 _.mapValues(errors => {
-                    if (errors.length === 1) return _.first(errors);
+                    if (errors.length === 1) {
+                        // !FIXME: option for specifying the error
+                        const error = _.first(errors);
+                        if (false || !error.ruleId.endsWith('*')) return error;
+                        const [, message, errorName = 'unknown'] = error.message.match(
+                            /(.*) \[(.*)\]$/
+                        );
+                        return _.assign(error, {
+                            message,
+                            ruleId: error.ruleId.replace(/\*$/, errorName)
+                        });
+                    }
                     // Otherwise there is two errors: the generic and specific one
                     // json/* or json/json and json/some-code
                     const firstErrorCode = getErrorCode(errors[0]);
