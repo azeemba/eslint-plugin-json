@@ -116,7 +116,7 @@ const processors = {
             fileLintResults[fileName] = getDiagnostics(parsed);
             fileComments[fileName] = parsed.comments;
 
-            const [, eol = ''] = text.match(/([\n\r]{0,2})?$/);
+            const [, eol = ''] = text.match(/([\n\r]*)$/);
             return [
                 preprocessorTemplate.replace(
                     preprocessorPlaceholder,
