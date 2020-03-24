@@ -92,12 +92,8 @@ describe('plugin', function() {
 
         const rules = ['undefined', 'trailing-comma'];
         const lintFile = fakeApplyRule(rules.map(rule => plugin.rules[rule]));
-        let samples = [singleQuotes, trailingCommas, multipleErrors, trailingText, good].map(
-            sample => {
-                // !FIXME: check
-                return _.set('text', preprocess(sample.text, sample.fileName)[0], sample);
-            }
-        );
+        const samples = [singleQuotes, trailingCommas, multipleErrors, trailingText, good];
+        samples.forEach(sample => preprocess(sample.text, sample.fileName));
 
         const errorsByFile = _.fromPairs(
             samples.map(sample => [sample.fileName, lintFile(sample.fileName)])
