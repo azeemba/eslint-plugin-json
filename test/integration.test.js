@@ -5,11 +5,18 @@ const _ = require('lodash/fp');
 const SCOPE = 'self'; // (for test purpose only, relying the the eslint-plugin-self for tests)
 const scoped = rule => `${SCOPE}/${rule}`;
 
-function getLintResults(filename, eslintConfig) {
+function getLintResults(filename, eslintConfig, commands = []) {
     try {
         const results = execFileSync(
             'eslint',
-            ['--config', eslintConfig || 'custom.eslintrc.json', '--format', 'json', filename],
+            [
+                '--config',
+                eslintConfig || 'custom.eslintrc.json',
+                ...commands,
+                '--format',
+                'json',
+                filename
+            ],
             {
                 encoding: 'utf8',
                 stdio: 'pipe',
@@ -60,6 +67,15 @@ function validateFile(filename, config = {}) {
         expect(results.errorCount).to.equal(config.errorCount, 'invalid count of errors');
     if (config.warningCount !== undefined)
         expect(results.warningCount).to.equal(config.warningCount, 'invalid counr of warnings');
+}
+
+function validateFixes(filename, config = {}) {
+    const result = getLintResults(`samples/${filename}.json`, config.eslintrc, ['--fix-dry-run']);
+
+    expect(result.output).not.to.be.undefined;
+    if (config.fixedOutput !== undefined) {
+        expect(result.output).to.equal(config.fixedOutput);
+    }
 }
 
 describe('Integrations tests', function() {
@@ -115,6 +131,15 @@ describe('Integrations tests with config', function() {
                 errorCount: 0,
                 warningCount: 0
             });
+        });
+    });
+});
+
+describe('Integrations tests with Prettier', function() {
+    it('prettifies JSON file', function() {
+        validateFixes('unformatted', {
+            eslintrc: '.eslintrc.with-prettier.json',
+            fixedOutput: '{\n\t"hello": "world"\n}\n'
         });
     });
 });

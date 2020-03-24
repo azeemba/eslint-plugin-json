@@ -1,0 +1,12 @@
+{
+    "plugins": ["self", "prettier"],
+    "rules": {
+        "prettier/prettier": ["error", {
+            "tabWidth": 4,
+            "useTabs": true,
+            "trailingComma": "all",
+            "singleQuote": true,
+            "endOfLine": "lf"
+        }]
+    }
+}
