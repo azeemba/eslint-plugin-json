@@ -104,6 +104,7 @@ const errorSignature = err =>
 
 const getErrorCode = _.pipe(_.get('ruleId'), _.split('/'), _.last);
 
+let jsPrefix = '/* eslint-disable */\n/* eslint-enable indent */\n(';
 const processors = {
     '.json': {
         preprocess: function(text, fileName) {
@@ -112,7 +113,7 @@ const processors = {
             const parsed = jsonServiceHandle.parseJSONDocument(textDocument);
             fileLintResults[fileName] = getDiagnostics(parsed);
             fileComments[fileName] = parsed.comments;
-            return ['']; // sorry nothing ;)
+            return [jsPrefix + text + ')'];
         },
         postprocess: function(messages, fileName) {
             const textDocument = fileDocuments[fileName];
@@ -138,6 +139,12 @@ const processors = {
                         start: {line: error.line - 1, character: error.column},
                         end: {line: error.endLine - 1, character: error.endColumn}
                     });
+                    if (error.fix) {
+                        error.fix.range = [
+                            error.fix.range[0] - jsPrefix.length,
+                            error.fix.range[1] - jsPrefix.length
+                        ];
+                    }
                     return _.assign(error, {
                         source,
                         column: error.column + 1,
@@ -146,7 +153,8 @@ const processors = {
                 }),
                 _.values
             )(messages);
-        }
+        },
+        supportsAutofix: true
     }
 };
 
