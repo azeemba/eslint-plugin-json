@@ -84,6 +84,9 @@ describe('Integrations tests', function() {
             warnings: ['*']
         });
     });
+    it('indentation', function() {
+        validateFile('indent', {errorCount: 11, warningCount: 0});
+    });
 });
 
 describe('Integrations tests with config', function() {

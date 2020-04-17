@@ -1,5 +1,6 @@
 const _ = require('lodash/fp');
 const jsonService = require('vscode-json-languageservice');
+const Linter = require('eslint').Linter;
 
 const jsonServiceHandle = jsonService.getLanguageService({});
 
@@ -70,6 +71,28 @@ const reportComment = (errorName, context) => {
     }, fileComments[context.getFilename()]);
 };
 
+const makeEslintReporter = ruleId => (errorName, context) => {
+    const textDocument = fileDocuments[context.getFilename()];
+    if (textDocument) {
+        const text = textDocument.getText();
+        const linter = new Linter();
+        const config = {rules: {}};
+        config.rules[ruleId] = ['error'].concat(context.options);
+        linter.verify('(' + text + ')', config).forEach(error => {
+            if (error.ruleId === ruleId) {
+                context.report({
+                    ruleId: error.ruleId,
+                    message: error.message,
+                    loc: {
+                        start: {line: error.line, column: error.column},
+                        end: {line: error.endLine, column: error.endColumn}
+                    }
+                });
+            }
+        });
+    }
+};
+
 const makeRule = (errorName, reporters) => ({
     create(context) {
         return {
@@ -95,6 +118,7 @@ const rules = _.pipe(
         '*': makeRule('*', [reportError(_.constant(true)), reportComment]),
         json: makeRule('json', [reportError(_.constant(true)), reportComment]),
         unknown: makeRule('unknown', reportError(_.negate(AllErrorCodes.includes))),
+        indent: makeRule('indent', makeEslintReporter('indent')),
         'comment-not-permitted': makeRule('comment-not-permitted', reportComment)
     })
 )(ErrorCodes);

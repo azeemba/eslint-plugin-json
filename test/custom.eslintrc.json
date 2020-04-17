@@ -3,7 +3,8 @@
   "rules": {
       "self/*": "warn",
       "self/duplicate-key": "error",
-      "self/trailing-comma": "error"
+      "self/trailing-comma": "error",
+      "self/indent": ["error", 4]
     },
     "overrides": [
         {
