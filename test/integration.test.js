@@ -60,7 +60,7 @@ function validateFile(filename, config = {}) {
     if (config.errorCount !== undefined)
         expect(results.errorCount).to.equal(config.errorCount, 'invalid count of errors');
     if (config.warningCount !== undefined)
-        expect(results.warningCount).to.equal(config.warningCount, 'invalid counr of warnings');
+        expect(results.warningCount).to.equal(config.warningCount, 'invalid count of warnings');
 }
 
 describe('Integrations tests', function() {
@@ -78,7 +78,7 @@ describe('Integrations tests', function() {
     it('detect wrong syntax', function() {
         validateFile('wrong-syntax', {errorCount: 1, warningCount: 0});
     });
-    it('detect many infrigement in messy json', function() {
+    it('detect many infringements in messy json', function() {
         validateFile('whole-mess', {
             errors: ['duplicate-key:2', 'trailing-comma'],
             warnings: ['*']
@@ -88,7 +88,7 @@ describe('Integrations tests', function() {
 
 describe('Integrations tests with config', function() {
     describe('recommended', function() {
-        it('detect many infrigement in messy json', function() {
+        it('detect many infringements in messy json', function() {
             validateFile('whole-mess', {
                 eslintrc: '.eslintrc.with-recommended-config.json',
                 errors: ['*:4']
@@ -103,7 +103,7 @@ describe('Integrations tests with config', function() {
         });
     });
     describe('recommended-with-comments', function() {
-        it('detect many infrigement in messy json', function() {
+        it('detect many infringements in messy json', function() {
             validateFile('whole-mess', {
                 eslintrc: '.eslintrc.with-recommended-comments-config.json',
                 errors: ['*:3']
