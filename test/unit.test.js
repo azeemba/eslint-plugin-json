@@ -151,7 +151,7 @@ describe('plugin', function() {
         it('should return no errors for good json', function() {
             const errors = postprocess(errorsByFile[good.fileName], good.fileName);
             assert.isArray(errors, 'should return an array');
-            assert.lengthOf(errors, 0, 'good json shouldnt have any errors');
+            assert.lengthOf(errors, 0, "good json shouldn't have any errors");
         });
     });
 });
