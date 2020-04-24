@@ -113,7 +113,7 @@ const processors = {
             const parsed = jsonServiceHandle.parseJSONDocument(textDocument);
             fileLintResults[fileName] = getDiagnostics(parsed);
             fileComments[fileName] = parsed.comments;
-            return [jsPrefix + text + ')'];
+            return [jsPrefix + (text || '{}') + ')'];
         },
         postprocess: function(messages, fileName) {
             const textDocument = fileDocuments[fileName];
