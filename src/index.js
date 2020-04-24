@@ -104,7 +104,7 @@ const errorSignature = err =>
 
 const getErrorCode = _.pipe(_.get('ruleId'), _.split('/'), _.last);
 
-let jsPrefix = '/* eslint-disable */\n/* eslint-enable indent */\n(';
+let jsPrefix = '/* eslint-disable *//* eslint-enable indent */(';
 const processors = {
     '.json': {
         preprocess: function(text, fileName) {
