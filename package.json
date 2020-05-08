@@ -32,7 +32,7 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "codecov": "^3.6.5",
-    "eslint": "^6.8.0",
+    "eslint": "^7.0.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-self": "^1.2.0",
@@ -40,8 +40,11 @@
     "nyc": "^15.0.0",
     "prettier": "^1.19.1"
   },
+  "peerDependencies": {
+    "eslint": "^7.0.0"
+  },
   "engines": {
-    "node": ">=8.10.0"
+    "node": "^10.12.0 || >=12.0.0"
   },
   "url": "https://github.com/azeemba/eslint-plugin-json",
   "license": "MIT"
