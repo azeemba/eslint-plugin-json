@@ -15,8 +15,11 @@
   ],
   "main": "src/index.js",
   "scripts": {
-    "test": "nyc mocha",
-    "lint": "eslint src test"
+    "integration:setup": "for v in {6..7}; do (cd test/packages/eslint-v$v && npm install); done",
+    "integration:run": "for v in {6..7}; do (cd test/packages/eslint-v$v && npm test || exit 1); done",
+    "test": "nyc mocha test/integration.test.js",
+    "lint": "eslint src test",
+    "eslint": "eslint"
   },
   "repository": {
     "type": "git",

@@ -6,9 +6,12 @@ node_js:
   - '12'
 install:
   - npm install
+  - npm run integration:setup
 script:
   - npm run lint
   - npm test
+  - npm run integration:run
+
 after_success:
   - codecov
 cache: npm
