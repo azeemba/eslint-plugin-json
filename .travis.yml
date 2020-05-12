@@ -1,17 +1,49 @@
 language: node_js
-node_js:
-  - '8.10'
-  - '8'
-  - '10'
-  - '12'
-install:
-  - npm install
-  - npm run integration:setup
-script:
-  - npm run lint
-  - npm test
-  - npm run integration:run
+node_js: '10'
 
 after_success:
   - codecov
+
 cache: npm
+
+stages:
+  - lint
+  - test
+
+jobs:
+  include:
+    - stage: lint
+      name: lint
+      script: npm run lint
+
+    - &test
+      stage: test
+      name: test-plugin-node10
+      node_js: '10'
+      install:
+        - npm install
+        - npm run integration install $SUPPORTED_ESLINT_MAJORS
+      script:
+        - npm test
+        - npm run integration test $SUPPORTED_ESLINT_MAJORS
+      env: SUPPORTED_ESLINT_MAJORS='6 7'
+
+    - <<: *test
+      name: test-plugin-node12
+      node_js: '12'
+      env: SUPPORTED_ESLINT_MAJORS='6 7'
+
+    - <<: *test
+      name: test-plugin-node8.10
+      node_js: '8.10'
+      env: SUPPORTED_ESLINT_MAJORS=6
+
+    - <<: *test
+      name: test-plugin-node8
+      node_js: '8'
+      env: SUPPORTED_ESLINT_MAJORS=6
+
+    - <<: *test
+      name: test-plugin-node14
+      node_js: '14'
+      env: SUPPORTED_ESLINT_MAJORS='6 7'
