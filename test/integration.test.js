@@ -51,16 +51,19 @@ function validateInfringementExpectation(expected, actualSituation) {
     );
 }
 
-function validateFile(filename, config = {}) {
-    const results = getLintResults(`samples/${filename}.json`, config.eslintrc);
+function validateFile(filename, expectations = {}) {
+    const results = getLintResults(`samples/${filename}.json`, expectations.eslintrc);
     const resultIndex = groupInfringementsByRules(results);
-    validateInfringementExpectation(config.errors, resultIndex.errors);
-    validateInfringementExpectation(config.warnings, resultIndex.warnings);
+    validateInfringementExpectation(expectations.errors, resultIndex.errors, 'errors');
+    validateInfringementExpectation(expectations.warnings, resultIndex.warnings, 'warnings');
 
-    if (config.errorCount !== undefined)
-        expect(results.errorCount).to.equal(config.errorCount, 'invalid count of errors');
-    if (config.warningCount !== undefined)
-        expect(results.warningCount).to.equal(config.warningCount, 'invalid count of warnings');
+    if (expectations.errorCount !== undefined)
+        expect(results.errorCount).to.equal(expectations.errorCount, 'invalid count of errors');
+    if (expectations.warningCount !== undefined)
+        expect(results.warningCount).to.equal(
+            expectations.warningCount,
+            'invalid count of warnings'
+        );
 }
 
 describe('Integrations tests', function() {

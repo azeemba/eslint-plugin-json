@@ -15,8 +15,10 @@
   ],
   "main": "src/index.js",
   "scripts": {
-    "test": "nyc mocha",
-    "lint": "eslint src test"
+    "integration": "test/integration-across-eslint-majors.sh",
+    "test": "nyc mocha test/integration.test.js",
+    "lint": "eslint src test",
+    "eslint": "eslint"
   },
   "repository": {
     "type": "git",
