@@ -8,7 +8,7 @@
 
 > Eslint plugin for JSON files
 
-:warning: Starting from **major 2.0**, rules **need to be explicitely activated**.
+:warning: Starting from **major 2.0**, rules **need to be explicitly activated**.
 [See **here** the minimal config to add](#basic-configuration) :rotating_light:
 
 ## Installation
