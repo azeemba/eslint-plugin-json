@@ -30,6 +30,7 @@ const AllowComments = 'allowComments';
 const fileLintResults = {};
 const fileComments = {};
 const fileDocuments = {};
+const fileLengths = {};
 
 const getSignature = problem =>
     `${problem.range.start.line} ${problem.range.start.character} ${problem.message}`;
@@ -104,6 +105,30 @@ const errorSignature = err =>
 
 const getErrorCode = _.pipe(_.get('ruleId'), _.split('/'), _.last);
 
+const preprocessorPlaceholder = '___';
+const preprocessorTemplate = `JSON.stringify(${preprocessorPlaceholder})`;
+
+function mapFix(fix, fileLength, prefixLength, suffix) {
+    let text = fix.text;
+    // We have to map the fix in such a way, that we account for the removed prefix and suffix.
+    let range = fix.range.map(location => location - prefixLength);
+    // For the suffix we have three cases:
+    // 1) The fix ends before the suffix => nothing left to do
+    if (range[0] >= fileLength + suffix.length) {
+        // 2) The fix starts after the suffix (for example concerning the last line break)
+        range = range.map(location => location - suffix.length);
+    } else if (range[1] >= fileLength) {
+        // 3) The fix intersects the suffix
+        range[1] = Math.max(range[1] - suffix.length, fileLength);
+        // in that case we have to delete the suffix also from the fix text.
+        const suffixPosition = text.lastIndexOf(suffix);
+        if (suffixPosition >= 0) {
+            text = text.slice(0, suffixPosition) + text.slice(suffixPosition + suffix.length);
+        }
+    }
+    return {range, text};
+}
+
 const processors = {
     '.json': {
         preprocess: function(text, fileName) {
@@ -112,12 +137,31 @@ const processors = {
             const parsed = jsonServiceHandle.parseJSONDocument(textDocument);
             fileLintResults[fileName] = getDiagnostics(parsed);
             fileComments[fileName] = parsed.comments;
-            return ['']; // sorry nothing ;)
+
+            const [, eol = ''] = text.match(/([\n\r]*)$/);
+            fileLengths[fileName] = text.length - eol.length;
+            return [
+                {
+                    text:
+                        preprocessorTemplate.replace(
+                            preprocessorPlaceholder,
+                            text.slice(0, fileLengths[fileName])
+                        ) + eol,
+                    filename: 'extracted.json'
+                }
+            ];
         },
         postprocess: function(messages, fileName) {
             const textDocument = fileDocuments[fileName];
+            const fileLength = fileLengths[fileName];
             delete fileLintResults[fileName];
             delete fileComments[fileName];
+
+            const prefixLength = preprocessorTemplate.indexOf(preprocessorPlaceholder);
+            const suffix = preprocessorTemplate.slice(
+                prefixLength + preprocessorPlaceholder.length
+            );
+
             return _.pipe(
                 _.first,
                 _.groupBy(errorSignature),
@@ -144,9 +188,23 @@ const processors = {
                         endColumn: error.endColumn + 1
                     });
                 }),
+                _.mapValues(error => {
+                    if (_.startsWith('json/', error.ruleId)) return error;
+
+                    const newError = _.assign(error, {
+                        column: error.column - (error.line === 1 ? prefixLength : 0),
+                        endColumn: error.endColumn - (error.endLine === 1 ? prefixLength : 0)
+                    });
+                    if (error.fix) {
+                        newError.fix = mapFix(error.fix, fileLength, prefixLength, suffix);
+                    }
+
+                    return newError;
+                }),
                 _.values
             )(messages);
-        }
+        },
+        supportsAutofix: true
     }
 };
 
