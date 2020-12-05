@@ -141,10 +141,14 @@ const processors = {
             const [, eol = ''] = text.match(/([\n\r]*)$/);
             fileLengths[fileName] = text.length - eol.length;
             return [
-                preprocessorTemplate.replace(
-                    preprocessorPlaceholder,
-                    text.slice(0, fileLengths[fileName])
-                ) + eol
+                {
+                    text:
+                        preprocessorTemplate.replace(
+                            preprocessorPlaceholder,
+                            text.slice(0, fileLengths[fileName])
+                        ) + eol,
+                    filename: 'extracted.json'
+                }
             ];
         },
         postprocess: function(messages, fileName) {
