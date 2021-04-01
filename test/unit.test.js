@@ -2,22 +2,22 @@ const plugin = require('../src');
 const {assert} = require('chai');
 const _ = require('lodash/fp');
 
-describe('plugin', function() {
-    describe('structure', function() {
-        it('should contain processors object', function() {
+describe('plugin', function () {
+    describe('structure', function () {
+        it('should contain processors object', function () {
             assert.property(plugin, 'processors', '.processors property is not defined');
         });
-        it('should contain .json property', function() {
+        it('should contain .json property', function () {
             assert.property(plugin.processors, '.json', '.json property is not defined');
         });
-        it('should contain .json.preprocess property', function() {
+        it('should contain .json.preprocess property', function () {
             assert.property(
                 plugin.processors['.json'],
                 'preprocess',
                 '.json.preprocess is not defined'
             );
         });
-        it('should contain .json.postprocess property', function() {
+        it('should contain .json.postprocess property', function () {
             assert.property(
                 plugin.processors['.json'],
                 'postprocess',
@@ -25,9 +25,9 @@ describe('plugin', function() {
             );
         });
     });
-    describe('preprocess', function() {
+    describe('preprocess', function () {
         const preprocess = plugin.processors['.json'].preprocess;
-        it('should return the same text', function() {
+        it('should return the same text', function () {
             const fileName = 'whatever-the-name.js';
 
             const newText = preprocess('whatever', fileName);
@@ -35,7 +35,7 @@ describe('plugin', function() {
             assert.strictEqual(newText[0], '');
         });
     });
-    describe('postprocess', function() {
+    describe('postprocess', function () {
         const preprocess = plugin.processors['.json'].preprocess;
         const postprocess = plugin.processors['.json'].postprocess;
 
@@ -47,20 +47,20 @@ describe('plugin', function() {
             column: _.get('loc.start.column'),
             nodeType: _.getOr(null, 'nodeType'),
             endLine: _.get('loc.end.line'),
-            endColumn: _.get('loc.end.column')
+            endColumn: _.get('loc.end.column'),
         };
-        const convertContextErrorToMessageError = err =>
-            _.mapValues(extractor => extractor(err), messageErrorFieldFromContextError);
-        const fakeApplyRule = rules => file => {
+        const convertContextErrorToMessageError = (err) =>
+            _.mapValues((extractor) => extractor(err), messageErrorFieldFromContextError);
+        const fakeApplyRule = (rules) => (file) => {
             const errors = [];
-            rules.forEach(rule => {
+            rules.forEach((rule) => {
                 const xxx = rule.create({
                     getFilename() {
                         return file;
                     },
                     report(err) {
                         errors.push(err);
-                    }
+                    },
                 });
                 xxx.Program();
             });
@@ -69,36 +69,36 @@ describe('plugin', function() {
 
         const singleQuotes = {
             fileName: 'singleQuotes.json',
-            text: "{'x': 0}"
+            text: "{'x': 0}",
         };
         const trailingCommas = {
             fileName: 'trailing.json',
-            text: '{ "x": 0, }'
+            text: '{ "x": 0, }',
         };
         const multipleErrors = {
             fileName: 'multipleErrors.json',
-            text: "{ x: 200, 'what': 0 }"
+            text: "{ x: 200, 'what': 0 }",
         };
         const trailingText = {
             fileName: 'trailingtext.json',
-            text: '{ "my_string": "hello world" }' + ' \n' + 'bad_text'
+            text: '{ "my_string": "hello world" }' + ' \n' + 'bad_text',
         };
 
         const good = {
             fileName: 'good.json',
-            text: JSON.stringify({a: [1, 2, 3], b: 'cat', c: {x: 1}})
+            text: JSON.stringify({a: [1, 2, 3], b: 'cat', c: {x: 1}}),
         };
 
         const rules = ['undefined', 'trailing-comma'];
-        const lintFile = fakeApplyRule(rules.map(rule => plugin.rules[rule]));
+        const lintFile = fakeApplyRule(rules.map((rule) => plugin.rules[rule]));
         const samples = [singleQuotes, trailingCommas, multipleErrors, trailingText, good];
-        samples.forEach(sample => preprocess(sample.text, sample.fileName));
+        samples.forEach((sample) => preprocess(sample.text, sample.fileName));
 
         const errorsByFile = _.fromPairs(
-            samples.map(sample => [sample.fileName, lintFile(sample.fileName)])
+            samples.map((sample) => [sample.fileName, lintFile(sample.fileName)])
         );
 
-        it('should return an error for the single quotes', function() {
+        it('should return an error for the single quotes', function () {
             const errors = postprocess(errorsByFile[singleQuotes.fileName], singleQuotes.fileName);
             assert.isArray(errors, 'should return an array');
             assert.lengthOf(errors, 1, 'should return one error');
@@ -115,7 +115,7 @@ describe('plugin', function() {
             assert.strictEqual(error.column, 2, 'should point to second character');
         });
 
-        it('should return an error for trailing commas', function() {
+        it('should return an error for trailing commas', function () {
             const errors = postprocess(
                 errorsByFile[trailingCommas.fileName],
                 trailingCommas.fileName
@@ -129,7 +129,7 @@ describe('plugin', function() {
             assert.strictEqual(error.column, 9, 'should point to the 9th character');
         });
 
-        it('should report unrecoverable syntax error', function() {
+        it('should report unrecoverable syntax error', function () {
             const errors = postprocess(errorsByFile[trailingText.fileName], trailingText.fileName);
             assert.isArray(errors, 'should return an array');
             assert.lengthOf(errors, 1, 'should return one error');
@@ -139,7 +139,7 @@ describe('plugin', function() {
             // mean anything for this error. JSHint just bails on the file.
         });
 
-        it('should return multiple errors for multiple errors', function() {
+        it('should return multiple errors for multiple errors', function () {
             const errors = postprocess(
                 errorsByFile[multipleErrors.fileName],
                 multipleErrors.fileName
@@ -148,7 +148,7 @@ describe('plugin', function() {
             assert.lengthOf(errors, 2, 'should return one error');
         });
 
-        it('should return no errors for good json', function() {
+        it('should return no errors for good json', function () {
             const errors = postprocess(errorsByFile[good.fileName], good.fileName);
             assert.isArray(errors, 'should return an array');
             assert.lengthOf(errors, 0, "good json shouldn't have any errors");
