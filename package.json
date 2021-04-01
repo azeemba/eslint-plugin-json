@@ -28,8 +28,8 @@
     "url": "https://github.com/azeemba/eslint-plugin-json/issues"
   },
   "dependencies": {
-    "lodash": "^4.17.19",
-    "vscode-json-languageservice": "^3.7.0"
+    "lodash": "^4.17.21",
+    "vscode-json-languageservice": "^4.0.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",
