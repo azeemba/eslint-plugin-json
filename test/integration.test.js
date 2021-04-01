@@ -3,7 +3,7 @@ const {expect} = require('chai');
 const _ = require('lodash/fp');
 
 const SCOPE = 'self'; // (for test purpose only, relying the the eslint-plugin-self for tests)
-const scoped = rule => `${SCOPE}/${rule}`;
+const scoped = (rule) => `${SCOPE}/${rule}`;
 
 function getLintResults(filename, eslintConfig) {
     try {
@@ -13,7 +13,7 @@ function getLintResults(filename, eslintConfig) {
             {
                 encoding: 'utf8',
                 stdio: 'pipe',
-                cwd: __dirname
+                cwd: __dirname,
             }
         );
         return JSON.parse(results)[0];
@@ -66,58 +66,58 @@ function validateFile(filename, expectations = {}) {
         );
 }
 
-describe('Integrations tests', function() {
-    it('validate correct json', function() {
+describe('Integrations tests', function () {
+    it('validate correct json', function () {
         validateFile('good-json', {errorCount: 0, warningCount: 0});
     });
-    it('detect duplicate keys', function() {
+    it('detect duplicate keys', function () {
         validateFile('duplicate-keys', {
-            errors: ['duplicate-key:2']
+            errors: ['duplicate-key:2'],
         }); // FIXME: give error count!
     });
-    it('handle comments in json', function() {
+    it('handle comments in json', function () {
         validateFile('json-with-comments', {errorCount: 0, warningCount: 0});
     });
-    it('detect wrong syntax', function() {
+    it('detect wrong syntax', function () {
         validateFile('wrong-syntax', {errorCount: 1, warningCount: 0});
     });
-    it('detect many infringements in messy json', function() {
+    it('detect many infringements in messy json', function () {
         validateFile('whole-mess', {
             errors: ['duplicate-key:2', 'trailing-comma'],
-            warnings: ['*']
+            warnings: ['*'],
         });
     });
 });
 
-describe('Integrations tests with config', function() {
-    describe('recommended', function() {
-        it('detect many infringements in messy json', function() {
+describe('Integrations tests with config', function () {
+    describe('recommended', function () {
+        it('detect many infringements in messy json', function () {
             validateFile('whole-mess', {
                 eslintrc: '.eslintrc.with-recommended-config.json',
-                errors: ['*:4']
+                errors: ['*:4'],
             });
         });
 
-        it('handle comments in json', function() {
+        it('handle comments in json', function () {
             validateFile('json-with-comments', {
                 eslintrc: '.eslintrc.with-recommended-config.json',
-                errorCount: 1 // comment-not-permitted under the '*' glob
+                errorCount: 1, // comment-not-permitted under the '*' glob
             });
         });
     });
-    describe('recommended-with-comments', function() {
-        it('detect many infringements in messy json', function() {
+    describe('recommended-with-comments', function () {
+        it('detect many infringements in messy json', function () {
             validateFile('whole-mess', {
                 eslintrc: '.eslintrc.with-recommended-comments-config.json',
-                errors: ['*:3']
+                errors: ['*:3'],
             });
         });
 
-        it('handle comments in json', function() {
+        it('handle comments in json', function () {
             validateFile('json-with-comments', {
                 eslintrc: '.eslintrc.with-recommended-comments-config.json',
                 errorCount: 0,
-                warningCount: 0
+                warningCount: 0,
             });
         });
     });
