@@ -43,7 +43,7 @@
     "prettier": "^1.19.1"
   },
   "engines": {
-    "node": ">=8.10.0"
+    "node": ">=12.0"
   },
   "url": "https://github.com/azeemba/eslint-plugin-json",
   "license": "MIT"
