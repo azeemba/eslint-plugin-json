@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-json",
-  "version": "2.1.2",
+  "version": "3.0.0",
   "description": "eslint plugin for JSON files",
   "keywords": [
     "eslint",
