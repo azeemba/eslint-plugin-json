@@ -10,7 +10,7 @@ stages:
   - lint
   - test
 
-env: SUPPORTED_ESLINT_MAJORS='6 7'
+env: SUPPORTED_ESLINT_MAJORS='6 7 8'
 jobs:
   include:
     - stage: lint

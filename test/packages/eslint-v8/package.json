@@ -1,7 +1,7 @@
 {
-  "name": "eslint-plugin-json-v7",
+  "name": "eslint-plugin-json-v8",
   "version": "0.1.0",
-  "description": "Integration for eslint-plugin-json against ESLint v7",
+  "description": "Integration for eslint-plugin-json against ESLint v8",
   "private": true,
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,7 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^7.32.0"
+    "eslint": "^8.0.0-0"
   },
   "dependencies": {}
 }

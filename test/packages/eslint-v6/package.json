@@ -1,7 +1,7 @@
 {
   "name": "eslint-plugin-json-v6",
   "version": "0.1.0",
-  "description": "Integration for eslint-plugin-json against eslint-§",
+  "description": "Integration for eslint-plugin-json against ESLint v6",
   "private": true,
   "main": "index.js",
   "scripts": {
