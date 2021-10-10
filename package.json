@@ -16,7 +16,7 @@
   "main": "src/index.js",
   "scripts": {
     "integration": "test/integration-across-eslint-majors.sh",
-    "test": "nyc mocha test/integration.test.js",
+    "test": "nyc mocha test/unit.test.js",
     "lint": "eslint src test",
     "eslint": "eslint"
   },
