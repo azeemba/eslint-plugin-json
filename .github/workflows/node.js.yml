@@ -28,4 +28,10 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run lint
+    - run: npm run test
     - run: npm run integration test 6 7 8 # eslint versions
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v2
+      with:
+        verbose: true
+        directory: coverage
