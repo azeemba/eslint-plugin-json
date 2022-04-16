@@ -1,8 +1,7 @@
 # eslint-plugin-json
 
 [![npm](https://img.shields.io/npm/v/eslint-plugin-json.svg)](https://www.npmjs.com/package/eslint-plugin-json)
-[![Build Status](https://travis-ci.org/azeemba/eslint-plugin-json.svg)](https://travis-ci.org/azeemba/eslint-plugin-json)
-[![codecov](https://codecov.io/gh/azeemba/eslint-plugin-json/branch/master/graph/badge.svg)](https://codecov.io/gh/azeemba/eslint-plugin-json)
+[![Build Status](https://github.com/azeemba/eslint-plugin-actions/actions/workflows/node.js.yml/badge.svg)](https://github.com/azeemba/eslint-plugin-json/actions)
 [![dependencies Status](https://david-dm.org/azeemba/eslint-plugin-json/master/status.svg)](https://david-dm.org/adrieankhisbe/eslint-plugin-json/master)
 [![Code Climate](https://codeclimate.com/github/azeemba/eslint-plugin-json/badges/gpa.svg)](https://codeclimate.com/github/azeemba/eslint-plugin-json)
 
