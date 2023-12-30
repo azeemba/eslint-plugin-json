@@ -24,15 +24,31 @@ $ yarn add --dev eslint eslint-plugin-json
 
 ## Usage
 
-### Basic configuration
+### Basic configuration (Flat Config ESLint Format)
 
 The `json` plugin ship with two recommended config you can use to easily activate it via the `extends` key.
 It comes in two flavor: one strict (`recommended`) and one allowing comments `recommended-with-comments`.
 
 
+```js
+{
+    export default [
+      {
+        files: ["**/*.json"],
+        ...json.configs["recommended"],
+    ];
+}
+```
+
+### Basic configuration (Legacy ESLint Format)
+
+The `json` plugin ship with two recommended config you can use to easily activate it via the `extends` key.
+It comes in two flavor: one strict (`recommended-legacy`) and one allowing comments `recommended-with-comments-legacy`.
+
+
 ```json
 {
-    "extends": ["plugin:json/recommended"]
+    "extends": ["plugin:json/recommended-legacy"]
 }
 ```
 
@@ -43,14 +59,45 @@ eslint . --ext .json,.js
 eslint example.json
 ```
 
-### Custom Configuration
+### Custom Configuration (Flat Config ESLint Format)
 
-If you want more granular control over which rules, and wich severity you want
+If you want more granular control over which rules, and which severity you want.
+
+If you want them all, add the `json/json` rule (or its alias `json/*`). (this is what the `recommended` config does)
+
+#### Global rules
+The global rules (`json/json` or its alias `json/*`) activate all the rules.
+Note it can be configured to ignore errors cause by comments.
+To do so, add option `'allowComments'` or `{allowComments: true}`
+
+For instance:
+```js
+{
+    import json from "eslint-plugin-json";
+
+    export default [
+      {
+        files: ["**/*.json"],
+        plugins: { json },
+        processor: "json/json"
+        "rules": {
+          "json/*": ["error", "allowComments"],
+          // or the equivalent:
+          "json/*": ["error", {"allowComments": true}]
+        }
+      },
+    ];
+}
+```
+
+### Custom Configuration (Legacy ESLint Format)
+
+If you want more granular control over which rules, and which severity you want.
 
 Add `json` to the list of plugins (You can omit the `eslint-plugin-` prefix)
 Then pick your rules.
 
-If you want them all, add the `json/json` rule (or its alias `json/*`). (this is what the `recommended` config does)
+If you want them all, add the `json/json` rule (or its alias `json/*`). (this is what the `recommended-legacy` config does)
 
 #### Global rules
 The global rules (`json/json` or its alias `json/*`) activate all the rules.
