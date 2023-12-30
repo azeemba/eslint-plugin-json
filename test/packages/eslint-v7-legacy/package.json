@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "pretest": "eslint --version",
-    "test": "../../../node_modules/.bin/mocha test/integration.test.js"
+    "test": "../../../node_modules/.bin/mocha test/integration-legacy.test.js"
   },
   "keywords": [
     "eslint",

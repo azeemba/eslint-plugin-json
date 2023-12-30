@@ -2,7 +2,7 @@ const {execFileSync} = require('child_process');
 const {expect} = require('chai');
 const _ = require('lodash/fp');
 
-const SCOPE = 'json'; // (for test purpose only)
+const SCOPE = 'self'; // (for test purpose only, relying the the eslint-plugin-self for tests)
 const scoped = (rule) => `${SCOPE}/${rule}`;
 
 function getLintResults(filename, eslintConfig) {
@@ -11,7 +11,7 @@ function getLintResults(filename, eslintConfig) {
             'eslint',
             [
                 '--config',
-                eslintConfig || 'custom.eslintrc.config.mjs',
+                eslintConfig || 'custom.eslintrc-legacy.json',
                 '--format',
                 'json',
                 filename,
@@ -99,14 +99,14 @@ describe('Integrations tests with config', function () {
     describe('recommended', function () {
         it('detect many infringements in messy json', function () {
             validateFile('whole-mess', {
-                eslintrc: '.eslintrc.with-recommended-config.mjs',
+                eslintrc: '.eslintrc.with-recommended-legacy-config.json',
                 errors: ['*:4'],
             });
         });
 
         it('handle comments in json', function () {
             validateFile('json-with-comments', {
-                eslintrc: '.eslintrc.with-recommended-config.mjs',
+                eslintrc: '.eslintrc.with-recommended-legacy-config.json',
                 errorCount: 1, // comment-not-permitted under the '*' glob
             });
         });
@@ -114,14 +114,14 @@ describe('Integrations tests with config', function () {
     describe('recommended-with-comments', function () {
         it('detect many infringements in messy json', function () {
             validateFile('whole-mess', {
-                eslintrc: '.eslintrc.with-recommended-comments-config.mjs',
+                eslintrc: '.eslintrc.with-recommended-comments-legacy-config.json',
                 errors: ['*:3'],
             });
         });
 
         it('handle comments in json', function () {
             validateFile('json-with-comments', {
-                eslintrc: '.eslintrc.with-recommended-comments-config.mjs',
+                eslintrc: '.eslintrc.with-recommended-comments-legacy-config.json',
                 errorCount: 0,
                 warningCount: 0,
             });

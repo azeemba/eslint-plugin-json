@@ -104,60 +104,70 @@ const errorSignature = (err) =>
 
 const getErrorCode = _.pipe(_.get('ruleId'), _.split('/'), _.last);
 
-const processors = {
-    '.json': {
-        preprocess: function (text, fileName) {
-            const textDocument = jsonService.TextDocument.create(fileName, 'json', 1, text);
-            fileDocuments[fileName] = textDocument;
-            const parsed = jsonServiceHandle.parseJSONDocument(textDocument);
-            fileLintResults[fileName] = getDiagnostics(parsed);
-            fileComments[fileName] = parsed.comments;
-            return ['']; // sorry nothing ;)
-        },
-        postprocess: function (messages, fileName) {
-            const textDocument = fileDocuments[fileName];
-            delete fileLintResults[fileName];
-            delete fileComments[fileName];
-            return _.pipe(
-                _.first,
-                _.groupBy(errorSignature),
-                _.mapValues((errors) => {
-                    if (errors.length === 1) return _.first(errors);
-                    // Otherwise there is two errors: the generic and specific one
-                    // json/* or json/json and json/some-code
-                    const firstErrorCode = getErrorCode(errors[0]);
-                    const isFirstGeneric = ['*', 'json'].includes(firstErrorCode);
-                    const genericError = errors[isFirstGeneric ? 0 : 1];
-                    const specificError = errors[isFirstGeneric ? 1 : 0];
-                    return genericError.severity > specificError.severity
-                        ? genericError
-                        : specificError;
-                }),
-                _.mapValues((error) => {
-                    const source = textDocument.getText({
-                        start: {line: error.line - 1, character: error.column},
-                        end: {line: error.endLine - 1, character: error.endColumn},
-                    });
-                    return _.assign(error, {
-                        source,
-                        column: error.column + 1,
-                        endColumn: error.endColumn + 1,
-                    });
-                }),
-                _.values
-            )(messages);
-        },
+const meta = {
+    name: 'eslint-plugin-json',
+    version: '3.1.0',
+};
+
+const jsonProcessor = {
+    preprocess: function (text, fileName) {
+        const textDocument = jsonService.TextDocument.create(fileName, 'json', 1, text);
+        fileDocuments[fileName] = textDocument;
+        const parsed = jsonServiceHandle.parseJSONDocument(textDocument);
+        fileLintResults[fileName] = getDiagnostics(parsed);
+        fileComments[fileName] = parsed.comments;
+        return ['']; // sorry nothing ;)
+    },
+    postprocess: function (messages, fileName) {
+        const textDocument = fileDocuments[fileName];
+        delete fileLintResults[fileName];
+        delete fileComments[fileName];
+        return _.pipe(
+            _.first,
+            _.groupBy(errorSignature),
+            _.mapValues((errors) => {
+                if (errors.length === 1) return _.first(errors);
+                // Otherwise there is two errors: the generic and specific one
+                // json/* or json/json and json/some-code
+                const firstErrorCode = getErrorCode(errors[0]);
+                const isFirstGeneric = ['*', 'json'].includes(firstErrorCode);
+                const genericError = errors[isFirstGeneric ? 0 : 1];
+                const specificError = errors[isFirstGeneric ? 1 : 0];
+                return genericError.severity > specificError.severity
+                    ? genericError
+                    : specificError;
+            }),
+            _.mapValues((error) => {
+                const source = textDocument.getText({
+                    start: {line: error.line - 1, character: error.column},
+                    end: {line: error.endLine - 1, character: error.endColumn},
+                });
+                return _.assign(error, {
+                    source,
+                    column: error.column + 1,
+                    endColumn: error.endColumn + 1,
+                });
+            }),
+            _.values
+        )(messages);
     },
 };
 
+const processors = {
+    // Supports old config.
+    '.json': jsonProcessor,
+    // Supports new config.
+    json: jsonProcessor,
+};
+
 const configs = {
-    recommended: {
+    'recommended-legacy': {
         plugins: ['json'],
         rules: {
             'json/*': 'error',
         },
     },
-    'recommended-with-comments': {
+    'recommended-with-comments-legacy': {
         plugins: ['json'],
         rules: {
             'json/*': ['error', {allowComments: true}],
@@ -165,4 +175,27 @@ const configs = {
     },
 };
 
-module.exports = {rules, configs, processors};
+const json = {meta, rules, configs, processors};
+
+json.configs['recommended'] = {
+    files: ['**/*.json'],
+    plugins: {
+        json,
+    },
+    rules: {
+        'json/*': 'error',
+    },
+    processor: 'json/json',
+};
+json.configs['recommended-with-comments'] = {
+    files: ['**/*.json'],
+    plugins: {
+        json,
+    },
+    rules: {
+        'json/*': ['error', {allowComments: true}],
+    },
+    processor: 'json/json',
+};
+
+module.exports = json;
