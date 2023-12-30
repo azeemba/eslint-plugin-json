@@ -17,5 +17,13 @@
       "bracketSpacing": false
     }],
     "no-console": "error"
-  }
+  },
+  "overrides": [
+    {
+      "files": "*.mjs",
+      "parserOptions": {
+        "sourceType": "module"
+      }
+    }
+  ]
 }
