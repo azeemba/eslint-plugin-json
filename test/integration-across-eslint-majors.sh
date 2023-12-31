@@ -4,7 +4,7 @@ cmd="$1"
 shift
 
 case "$cmd" in
-  test|install);;
+  test|install|ci);;
   *)
     echo "Unknown integration subcommand $cmd"
     exit 2
