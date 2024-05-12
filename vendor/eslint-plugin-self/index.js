@@ -33,7 +33,9 @@ if (plugin.configs) {
       selfPlugin.configs[configName].extends = [].concat(config.extends)
         .map(extendsName => extendsName.replace(`plugin:${pluginName}/`, 'plugin:self/'));
     }
-    if (config.plugins) {
+    // The Array.isArray avoids attempting to change the plugins property for
+    // eslint v9 based configurations.
+    if (config.plugins && Array.isArray(config.plugins)) {
       selfPlugin.configs[configName].plugins = [].concat(config.plugins)
         .map(enabledPluginName => enabledPluginName.replace(pluginName, 'self'));
     }
