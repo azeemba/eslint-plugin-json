@@ -70,7 +70,25 @@ const reportComment = (errorName, context) => {
     }, fileComments[context.getFilename()]);
 };
 
+const ruleSchema = [
+    {
+        anyOf: [
+            {
+                enum: ['allowComments'],
+            },
+            {
+                type: 'object',
+                properties: {
+                    allowComments: {type: 'boolean'},
+                },
+                additionalProperties: false,
+            },
+        ],
+    },
+];
+
 const makeRule = (errorName, reporters) => ({
+    meta: {schema: ruleSchema},
     create(context) {
         return {
             Program() {
