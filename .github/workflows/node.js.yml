@@ -29,8 +29,8 @@ jobs:
     - run: npm ci
     - run: npm run lint
     - run: npm run test
-    - run: npm run integration ci 7-legacy 8-legacy 8 # eslint versions
-    - run: npm run integration test 7-legacy 8-legacy 8 # eslint versions
+    - run: npm run integration ci 7-legacy 8-legacy 8 9 # eslint versions
+    - run: npm run integration test 7-legacy 8-legacy 8 9 # eslint versions
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v2
       with:
