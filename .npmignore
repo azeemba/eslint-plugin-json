@@ -2,9 +2,11 @@ test
 examples
 private
 tmp
+coverage
 .npmignore
 .eslintrc
 .github
 .vscode
 .nycrc
 .eslintignore
+vendor

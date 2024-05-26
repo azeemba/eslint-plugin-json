@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-json",
-  "version": "3.1.0",
+  "version": "4.0.0",
   "description": "eslint plugin for JSON files",
   "keywords": [
     "eslint",
@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/azeemba/eslint-plugin-json"
+    "url": "git+https://github.com/azeemba/eslint-plugin-json.git"
   },
   "bugs": {
     "url": "https://github.com/azeemba/eslint-plugin-json/issues"
@@ -43,7 +43,7 @@
     "prettier": "^2.3.2"
   },
   "engines": {
-    "node": ">=12.0"
+    "node": ">=18.0"
   },
   "url": "https://github.com/azeemba/eslint-plugin-json",
   "license": "MIT"
