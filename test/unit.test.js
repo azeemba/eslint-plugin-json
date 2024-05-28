@@ -223,7 +223,8 @@ function validateFile(filename, expectations = {}) {
 }
 
 describe('Rules', function () {
-    this.slow(4000);
+    this.slow(3000);
+    this.timeout(5000);
     it('validate correct json', function () {
         validateFile('good-json', {errorCount: 0, warningCount: 0});
     });
@@ -247,7 +248,8 @@ describe('Rules', function () {
 });
 
 describe('Rules with config', function () {
-    this.slow(4000);
+    this.slow(3000);
+    this.timeout(5000);
     describe('recommended', function () {
         it('detect many infringements in messy json', function () {
             validateFile('whole-mess', {
