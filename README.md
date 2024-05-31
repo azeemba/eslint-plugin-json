@@ -30,13 +30,14 @@ It comes in two flavor: one strict (`recommended`) and one allowing comments `re
 
 
 ```js
-{
-    export default [
-      {
-        files: ["**/*.json"],
-        ...json.configs["recommended"],
-    ];
-}
+import chaiExpectPlugin from 'eslint-plugin-chai-expect';
+
+export default [
+  {
+    files: ["**/*.json"],
+    ...json.configs["recommended"]
+  }
+];
 ```
 
 ### Basic configuration (Legacy ESLint Format)
