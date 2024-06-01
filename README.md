@@ -30,7 +30,7 @@ It comes in two flavor: one strict (`recommended`) and one allowing comments `re
 
 
 ```js
-import chaiExpectPlugin from 'eslint-plugin-chai-expect';
+import json from 'eslint-plugin-json';
 
 export default [
   {
