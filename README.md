@@ -72,22 +72,20 @@ To do so, add option `'allowComments'` or `{allowComments: true}`
 
 For instance:
 ```js
-{
-    import json from "eslint-plugin-json";
+import json from "eslint-plugin-json";
 
-    export default [
-      {
-        files: ["**/*.json"],
-        plugins: { json },
-        processor: "json/json"
-        "rules": {
-          "json/*": ["error", "allowComments"],
-          // or the equivalent:
-          "json/*": ["error", {"allowComments": true}]
-        }
-      },
-    ];
-}
+export default [
+  {
+    files: ["**/*.json"],
+    plugins: { json },
+    processor: "json/json"
+    "rules": {
+      "json/*": ["error", "allowComments"],
+      // or the equivalent:
+      "json/*": ["error", {"allowComments": true}]
+    }
+  },
+];
 ```
 
 ### Custom Configuration (Legacy ESLint Format)
@@ -165,7 +163,7 @@ which the VSCode implementation provides by leveraging the
 
 #### Will this plugin provide more configuration?
 
-It is now possible as you can see in the [Configuration section](#custom-configuration)
+It is now possible as you can see in the [Configuration section](#custom-configuration).
 
 Additionally, support for autofixing common errors could be added in the feature.
 
@@ -175,4 +173,4 @@ Not really. `eslint` plugin interface wasn't designed to lint a completely diffe
 its interface is flexible enough to allow it. So this plugin is certainly unusual.
 
 Ideally, your editor would natively supports linting JSON. If it doesn't though, then might as well
-use this plugin. Hacky linting is better than no linting :)
+use this plugin. Hacky linting is better than no linting :).
