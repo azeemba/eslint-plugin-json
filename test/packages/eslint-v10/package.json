@@ -1,0 +1,23 @@
+{
+  "name": "eslint-plugin-json-v9",
+  "version": "0.1.0",
+  "description": "Integration for eslint-plugin-json against ESLint v10",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "pretest": "eslint --version",
+    "test": "npx mocha test/integration.test.js"
+  },
+  "keywords": [
+    "eslint",
+    "eslint-plugin",
+    "eslint-plugin-json",
+    "integration-tests"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "10.4.1",
+    "mocha": "^11.7.6"
+  },
+  "dependencies": {}
+}

@@ -42,17 +42,25 @@ function getDiagnostics(jsonDocument) {
     )(jsonDocument.syntaxErrors);
 }
 const reportError = (filter) => (errorName, context) => {
-    _.filter(filter, fileLintResults[context.getFilename()]).forEach((error) => {
-        context.report({
-            ruleId: `json/${errorName}`,
-            message: error.message,
-            loc: {
-                start: {line: error.range.start.line + 1, column: error.range.start.character},
-                end: {line: error.range.end.line + 1, column: error.range.end.character},
-            },
-            // later: see how to add fix
-        });
-    });
+    _.filter(filter, fileLintResults[context?.getFilename?.() ?? context?.filename]).forEach(
+        (error) => {
+            context.report({
+                ruleId: `json/${errorName}`,
+                message: error.message,
+                loc: {
+                    start: {
+                        line: error.range.start.line + 1,
+                        column: error.range.start.character,
+                    },
+                    end: {
+                        line: error.range.end.line + 1,
+                        column: error.range.end.character,
+                    },
+                },
+                // later: see how to add fix
+            });
+        }
+    );
 };
 const reportComment = (errorName, context) => {
     const ruleOption = _.head(context.options);
@@ -63,11 +71,14 @@ const reportComment = (errorName, context) => {
             ruleId: errorName,
             message: 'Comment not allowed',
             loc: {
-                start: {line: comment.start.line + 1, column: comment.start.character},
+                start: {
+                    line: comment.start.line + 1,
+                    column: comment.start.character,
+                },
                 end: {line: comment.end.line + 1, column: comment.end.character},
             },
         });
-    }, fileComments[context.getFilename()]);
+    }, fileComments[context?.getFilename?.() ?? context?.filename]);
 };
 
 const ruleSchema = [
@@ -124,7 +135,7 @@ const getErrorCode = _.pipe(_.get('ruleId'), _.split('/'), _.last);
 
 const meta = {
     name: 'eslint-plugin-json',
-    version: '3.1.0',
+    version: '4.0.1',
 };
 
 const jsonProcessor = {
