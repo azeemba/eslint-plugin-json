@@ -7,7 +7,7 @@
 
 > Eslint plugin for JSON files
 
-:warning: If you are using eslint v9 or newer, use eslint-plugin-json v4 or newer.
+:warning: If you are using eslint v10 or newer, use eslint-plugin-json v5 or newer.
 
 ## Installation
 
